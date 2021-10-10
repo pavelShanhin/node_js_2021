@@ -1,4 +1,7 @@
 # node_js_2021
 
-##Install depencies 
+## Start application
+
+## Install needed dependencies
+
 `npm install`
