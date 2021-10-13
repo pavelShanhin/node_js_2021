@@ -1,22 +1,8 @@
-import { stdin, stdout } from 'process';
-import { Transform } from 'stream';
+const readline = require('readline');
+const rl = readline.createInterface({
+  input: process.stdin,
+});
 
-class ReverseString extends Transform {
-  constructor() {
-    super();
-  }
-
-  _transform(chunk, _encoding, callback) {
-    this.push(chunk.toString().split('').reverse().join(''));
-
-    callback();
-  }
-
-  _flush(callback) {
-    callback();
-  }
-}
-
-const reversing = new ReverseString();
-
-stdin.pipe(reversing).pipe(stdout);
+rl.on('line', (line) => {
+  console.log(line.split('').reverse().join(''))
+});
