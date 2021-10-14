@@ -1,6 +1,6 @@
 import csv from 'csvtojson';
 import { createWriteStream } from'fs';
-import { Duplex } from 'stream';
+import { Duplex, pipeline } from 'stream';
 
 const csvFile = './csv/my_table.csv';
 const answerFile = './result.txt';
@@ -30,20 +30,22 @@ class Dividing extends Duplex {
 }
 
 //handlers
-const handleError = (error) => {console.error(error);} 
-const handleComplete = () => {console.log('Operation of reading is completed');} 
+const handleError = (error) => {
+  if(error) {
+    console.error('Pipeline failed',error);
+  } else {
+    console.log('Operation of reading is completed');
+  }
+} 
 
 const dividing = new Dividing();
 const writeStream = createWriteStream(answerFile);
  
-dividing.on('error', handleError);
-writeStream.on('error', handleError);
-
-csv()
+pipeline(csv()
 .fromFile(csvFile)
 .subscribe(()=>{
     return new Promise((resolve,reject)=>{
       resolve();
       reject();
     })
-},handleError, handleComplete).pipe(dividing).pipe(writeStream)
+}), dividing, writeStream, handleError )
