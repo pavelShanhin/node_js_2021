@@ -1,5 +1,5 @@
 import csv from 'csvtojson';
-import { createWriteStream } from'fs';
+import { createReadStream, createWriteStream } from'fs';
 import { Duplex, pipeline } from 'stream';
 
 const csvFile = './csv/my_table.csv';
@@ -40,12 +40,10 @@ const handleError = (error) => {
 
 const dividing = new Dividing();
 const writeStream = createWriteStream(answerFile);
+const readStream = createReadStream(csvFile).pipe(csv().subscribe(()=>{
+  return new Promise((resolve,reject)=>{
+    resolve();
+    reject();
+  })}))
  
-pipeline(csv()
-.fromFile(csvFile)
-.subscribe(()=>{
-    return new Promise((resolve,reject)=>{
-      resolve();
-      reject();
-    })
-}), dividing, writeStream, handleError )
+pipeline(readStream, dividing, writeStream, handleError )
