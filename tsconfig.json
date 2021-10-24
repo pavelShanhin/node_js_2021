@@ -1,13 +1,14 @@
 {
   "compilerOptions": {
-    "module": "es6",
+    "allowSyntheticDefaultImports": true,
     "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
+    "strict": true,
+    "module": "CommonJS",
+    "lib": ["ESNext"],
+    "noEmit": true,
+    "moduleResolution": "Node",
+    "skipLibCheck": true,
   },
-  "lib": ["ES2021"],
-  "include": ["src/**/*"],
-  "exclude": [""]
+  "include": ["src/**/*.ts"],
+  "exclude": ["node_modules/**/*", "dist/**/*"]
 }
