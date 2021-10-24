@@ -1,9 +1,9 @@
 import { INITIAL_USERS } from './services.constants';
 import { generateId, sortingCallback } from './services.helpers';
-import { User, UserServiceInstance, CreateUserData, RequestParams } from '../index.types';
+import { User, UserServiceInstance, CreateUserData, RequestParams, UpdateUserData } from '../index.types';
 
 export class UserService implements UserServiceInstance {
-    private users: User[] = [...INITIAL_USERS] ;
+    private users: User[] = [...INITIAL_USERS];
 
     constructor() {}
 
@@ -41,14 +41,16 @@ export class UserService implements UserServiceInstance {
         return newUser;
     }
 
-    updateUser(passedUser: User) {
+    updateUser(passedUser:UpdateUserData) {
         const foundUserIndex = this.users.findIndex(({ id }) => id === `${passedUser.id}`);
 
         if (foundUserIndex === -1) {
             return undefined;
         }
 
-        this.users[foundUserIndex] = { ...passedUser };
+        const foundUser = this.users[foundUserIndex];
+
+        this.users[foundUserIndex] = { ...foundUser, ...passedUser };
 
         return this.users[foundUserIndex];
     }

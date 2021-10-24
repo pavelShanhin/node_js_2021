@@ -12,12 +12,14 @@ export type RequestParams = {
   limit?:number;
 }
 
+
+export type UpdateUserData = Omit<User, 'isDeleted'>
+export type CreateUserData = Omit<UpdateUserData, 'id'>
+
 export interface UserServiceInstance {
   getUser(_params:RequestParams): User | undefined;
   getUsersList(_params: RequestParams): User[] | undefined;
-  createUser(_user: User):void;
-  updateUser(_user: User):void;
-  deleteUser(_userId: string):void;
+  createUser(_user: User):User | undefined;
+  updateUser(_user: User):User | undefined;
+  deleteUser(_userId: string): User | undefined;
 }
-
-export type CreateUserData = Omit<User, 'id' | 'isDeleted'>
