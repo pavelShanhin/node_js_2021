@@ -4,7 +4,8 @@ import {
     ValidatedRequestSchema,
     createValidator
 } from 'express-joi-validation';
-import { CreateUserData, UpdateUserData } from '../index.types';
+import { CreateUserData, UpdateUserData, UpdateParams } from '../index.types';
+
 
 const commonSchema = {
     age: Joi.number().greater(3).less(131).required(),
@@ -14,16 +15,19 @@ const commonSchema = {
 
 const createBodySchema = Joi.object(commonSchema);
 const updateBodySchema = Joi.object({ ...commonSchema, id: Joi.string().required() });
+const updateParamsSchema = Joi.object({ userId: Joi.string().required() });
 
 export interface CreateRequestSchema extends ValidatedRequestSchema {
   [ContainerTypes.Body]: CreateUserData
 }
 
 export interface UpdateRequestSchema extends ValidatedRequestSchema {
-  [ContainerTypes.Body]: UpdateUserData
+  [ContainerTypes.Params] : UpdateParams,
+  [ContainerTypes.Body]: UpdateUserData,
 }
 
 const requestValidator = createValidator();
 
 export const creationValidator = requestValidator.body(createBodySchema);
-export const updatingValidator = requestValidator.body(updateBodySchema);
+export const updatingBodyValidator = requestValidator.body(updateBodySchema);
+export const updatingParamsValidator  = requestValidator.params(updateParamsSchema);

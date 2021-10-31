@@ -41,8 +41,8 @@ export class UserService implements UserServiceInstance {
         return newUser;
     }
 
-    updateUser(passedUser:UpdateUserData) {
-        const foundUserIndex = this.users.findIndex(({ id }) => id === `${passedUser.id}`);
+    updateUser(userId: string, passedUser:UpdateUserData) {
+        const foundUserIndex = this.users.findIndex(({ id }) => id === userId);
 
         if (foundUserIndex === -1) {
             return undefined;

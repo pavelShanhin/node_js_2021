@@ -13,3 +13,7 @@
 ## Run linter 'eslint'
 
 `npm run lint'
+
+### Avalible API
+
+`/users-management/users`
