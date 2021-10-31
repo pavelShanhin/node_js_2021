@@ -6,9 +6,7 @@
     "env": {
         "browser": true,
         "node": true,
-        "jasmine": true,
-        "es6": true,
-        "jest": true
+        "es6": true
     },
     "parserOptions": {
         "ecmaFeatures": {
@@ -159,7 +157,7 @@
         "no-shadow": 2,
         "no-undef-init": 2,
         "no-undef": 2,
-        "no-unused-vars": 2,
+        "no-unused-vars": ["error", { "argsIgnorePattern": "^_" }],
         "callback-return": 2,
         "no-mixed-requires": 2,
         "no-path-concat": 2,
