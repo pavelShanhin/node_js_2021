@@ -12,6 +12,6 @@ export const ROUTERS_NAMES = {
 
 export const SEQUELIZE_CONFIG: Options = {dialect: 'postgres', host: 'localhost', port:5432}
 
-export const DB_NAME = 'usersdb';
+export const DB_NAME = 'postgres';
 export const DB_USER_NAME = 'postgres';
 export const DB_PASSWORD = '1234';

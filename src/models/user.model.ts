@@ -1,10 +1,9 @@
-import { STRING, INTEGER, BOOLEAN } from 'sequelize';
-import { sequelize } from '../index';
+import { STRING, INTEGER, BOOLEAN, Sequelize } from 'sequelize';
 import { UserInstance } from '../index.types';
 
-export const UserModel = sequelize.define<UserInstance>('user', {
+export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInstance>('user', {
     id: {
-        type: STRING,
+        type: INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
@@ -27,3 +26,5 @@ export const UserModel = sequelize.define<UserInstance>('user', {
         defaultValue: false
     }
 });
+
+

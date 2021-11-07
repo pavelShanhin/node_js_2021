@@ -1,11 +1,10 @@
-import { UserService } from '../services/user';
+import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../services/index';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
 import { RequestParams } from '../index.types';
-import { CreateRequestSchema, UpdateRequestSchema  } from '../services/validation';
 import { Request, Response } from 'express';
-import { UserModel } from '../models/user.model';
+import { UserModel } from '../models/index';
 
 const userService = new UserService(UserModel);
 
