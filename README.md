@@ -8,6 +8,8 @@
 
 ## Run application
 
+### Before start application you need to go to src/configure/configure.constants and set up database options
+
 `npm run dev:server'
 
 ## Run linter 'eslint'
