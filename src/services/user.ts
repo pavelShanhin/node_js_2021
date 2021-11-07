@@ -16,7 +16,11 @@ export class UserService implements UserServiceInstance {
 
     async getUsersList({ login, limit }: RequestParams) {
         try {
-            const users = await this.userModel.findAll({ limit, where: login ? { login: { [Op.like]: `%${login}%` } } : undefined, order: [['login', 'ASK']], raw: true });
+            const whereParams = { login: {
+                [Op.iLike]: `%${login}%`
+            } };
+
+            const users = await this.userModel.findAll({ where: login ? whereParams : undefined, order: [['id', 'ASC']], limit, raw: true });
 
             return users;
         } catch (error) {
@@ -27,18 +31,7 @@ export class UserService implements UserServiceInstance {
     }
 
     async createUser(userData: CreateUserData) {
-        // const { age, login, password } = userData;
-
         try {
-            // const foundUser = await this.userModel.findOne({where: {login}});
-
-
-            // if (foundUser) {
-            //     return null;
-            // }
-
-            // const newUser = await this.userModel.create({age, login, password});
-
             const [newUser, isCreated] = await this.userModel.findOrCreate({ where: userData, raw:true });
 
             if (!isCreated) {
@@ -53,11 +46,15 @@ export class UserService implements UserServiceInstance {
         }
     }
 
-    async updateUser(userId: string, passedUser:UpdateUserData) {
+    async updateUser(passedUser:UpdateUserData) {
         try {
-            const [, updatedUser] = await this.userModel.update(passedUser, { where: { id: userId } });
+            const [result] = await this.userModel.upsert(passedUser, { returning: true });
 
-            return updatedUser[0];
+            if (result) {
+                return result;
+            }
+
+            return null;
         } catch (error) {
             console.error(error);
 
@@ -71,9 +68,14 @@ export class UserService implements UserServiceInstance {
 
             if (foundUser) {
                 const { age, login, password } = (foundUser as unknown) as User;
-                const [, deletedUser] = await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
+                await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
+                const result = await this.userModel.destroy({ where: { id: userId } });
 
-                return deletedUser[0];
+                if (result > 0) {
+                    return 1;
+                }
+
+                return null;
             }
 
             return null;

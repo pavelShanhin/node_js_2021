@@ -11,6 +11,8 @@ export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInsta
     login: {
         type: STRING,
         allowNull: false
+
+
     },
     password: {
         type: STRING,
@@ -25,6 +27,5 @@ export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInsta
         allowNull: false,
         defaultValue: false
     }
-});
-
+}, { paranoid: true });
 

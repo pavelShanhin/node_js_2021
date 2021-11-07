@@ -26,6 +26,6 @@ export interface UserServiceInstance {
   getUser(_params:RequestParams): Promise<UserInstance | null>;
   getUsersList(_params: RequestParams): Promise<UserInstance[] | null>;
   createUser(_user: CreateUserData):Promise<UserInstance | null>;
-  updateUser(_userId: string, _user: User):Promise<UserInstance | null>;
-  softUserDelete(_userId: string): Promise<UserInstance | null>;
+  updateUser(_user: User):Promise<UserInstance | null>;
+  softUserDelete(_userId: string): Promise<number | null>;
 }

@@ -27,7 +27,7 @@ class UserController {
 
     async updateUser(req: ValidatedRequest<UpdateRequestSchema>, res: Response) {
         try {
-            const updateUser = await userService.updateUser(req.params.userId, req.body);
+            const updateUser = await userService.updateUser(req.body);
 
             if (updateUser) {
                 res.status(204).send({ message: 'User was updated', updateUser });

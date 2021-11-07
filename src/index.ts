@@ -1,7 +1,7 @@
 import express from 'express';
 import { userRouter } from './routers/user';
-import {ROUTERS_NAMES, PORT} from './configure/configure.constants'
-import {sequelize} from './models/index'
+import { ROUTERS_NAMES, PORT } from './configure/configure.constants';
+import { sequelize } from './models/index';
 
 const app = express();
 
@@ -14,7 +14,7 @@ app.get('/', (_req, res) => {
 
 app.use(ROUTERS_NAMES.users, userRouter);
 
-sequelize.sync({force: true}).then(() => {
+sequelize.sync({ force: true }).then(() => {
     app.listen(PORT, () => {
         console.log(`Server start on port: ${PORT}`);
     });
