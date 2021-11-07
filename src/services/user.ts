@@ -1,65 +1,86 @@
-import { INITIAL_USERS } from './services.constants';
-import { generateId, sortingCallback } from './services.helpers';
-import { User, UserServiceInstance, CreateUserData, RequestParams, UpdateUserData } from '../index.types';
+import { ModelCtor, Op } from 'sequelize';
+import { User, UserServiceInstance, RequestParams, UserInstance, CreateUserData, UpdateUserData } from '../index.types';
 
 export class UserService implements UserServiceInstance {
-    private users: User[] = [...INITIAL_USERS];
+    public userModel: ModelCtor<UserInstance>;
 
-    constructor() {}
+    constructor(userModel:ModelCtor<UserInstance>) {
+        this.userModel = userModel;
+    }
 
-    getUser({ userId }: RequestParams) {
-        const foundUser = this.users.find(({ id }) => id === userId);
+    async getUser({ userId }: RequestParams) {
+        const foundUser = await this.userModel.findByPk(userId, { raw:true });
 
         return foundUser;
     }
 
-    getUsersList({ login, limit }: RequestParams) {
-        if (!login) {
-            return this.users.slice(0, limit);
+    async getUsersList({ login, limit }: RequestParams) {
+        try {
+            const users = await this.userModel.findAll({ limit, where: login ? { login: { [Op.like]: `%${login}%` } } : undefined, order: [['login', 'ASK']], raw: true });
+
+            return users;
+        } catch (error) {
+            console.error(error);
+
+            return null;
         }
-
-        const lowerCasePassedString = login.toLowerCase();
-        const usersBySubstring  = this.users.filter((user) => user.login.toLowerCase().indexOf(lowerCasePassedString) !== -1);
-        const sortedUsers = usersBySubstring.sort(sortingCallback);
-
-        return sortedUsers.slice(0, limit);
     }
 
-    createUser(userData: CreateUserData) {
-        const { age, login, password } = userData;
+    async createUser(userData: CreateUserData) {
+        // const { age, login, password } = userData;
 
-        const foundUser = this.users.find((user) => user.login === login);
+        try {
+            // const foundUser = await this.userModel.findOne({where: {login}});
 
-        if (foundUser) {
-            return undefined;
+
+            // if (foundUser) {
+            //     return null;
+            // }
+
+            // const newUser = await this.userModel.create({age, login, password});
+
+            const [newUser, isCreated] = await this.userModel.findOrCreate({ where: userData, raw:true });
+
+            if (!isCreated) {
+                return null;
+            }
+
+            return newUser;
+        } catch (error) {
+            console.error(error);
+
+            return null;
         }
-
-        const newUser: User = { id: generateId(), login, age, password, isDeleted:false };
-
-        this.users.push(newUser);
-
-        return newUser;
     }
 
-    updateUser(userId: string, passedUser:UpdateUserData) {
-        const foundUserIndex = this.users.findIndex(({ id }) => id === userId);
+    async updateUser(userId: string, passedUser:UpdateUserData) {
+        try {
+            const [, updatedUser] = await this.userModel.update(passedUser, { where: { id: userId } });
 
-        if (foundUserIndex === -1) {
-            return undefined;
+            return updatedUser[0];
+        } catch (error) {
+            console.error(error);
+
+            return null;
         }
-
-        const foundUser = this.users[foundUserIndex];
-
-        this.users[foundUserIndex] = { ...foundUser, ...passedUser };
-
-        return this.users[foundUserIndex];
     }
 
-    deleteUser(userId: string) {
-        const foundUserIndex = this.users.findIndex((user) => userId === user.id);
+    async softUserDelete(userId: string) {
+        try {
+            const foundUser = await this.userModel.findByPk(userId, { raw: true });
 
-        this.users[foundUserIndex].isDeleted = true;
+            if (foundUser) {
+                const { age, login, password } = (foundUser as unknown) as User;
+                const [, deletedUser] = await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
 
-        return this.users[foundUserIndex];
+                return deletedUser[0];
+            }
+
+            return null;
+        } catch (error) {
+            console.error(error);
+
+            return null;
+        }
     }
 }

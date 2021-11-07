@@ -1,3 +1,5 @@
+import { Model, Optional } from 'sequelize';
+
 export type User = {
   id: string;
   login: string;
@@ -15,13 +17,15 @@ export interface RequestParams extends Partial<UpdateParams> {
   limit?:number;
 }
 
-export type UpdateUserData = Omit<User, 'isDeleted'>
-export type CreateUserData = Omit<UpdateUserData, 'id'>
+export type UpdateUserData  = Optional<User, 'isDeleted'>
+export type CreateUserData  = Omit<UpdateUserData, 'id'>
+
+export type UserInstance = Model<User, CreateUserData>
 
 export interface UserServiceInstance {
-  getUser(_params:RequestParams): User | undefined;
-  getUsersList(_params: RequestParams): User[] | undefined;
-  createUser(_user: User):User | undefined;
-  updateUser(_userId: string, _user: User):User | undefined;
-  deleteUser(_userId: string): User | undefined;
+  getUser(_params:RequestParams): Promise<UserInstance | null>;
+  getUsersList(_params: RequestParams): Promise<UserInstance[] | null>;
+  createUser(_user: CreateUserData):Promise<UserInstance | null>;
+  updateUser(_userId: string, _user: User):Promise<UserInstance | null>;
+  softUserDelete(_userId: string): Promise<UserInstance | null>;
 }
