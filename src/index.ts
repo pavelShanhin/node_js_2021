@@ -1,7 +1,7 @@
 import express from 'express';
 import { userRouter } from './routers/user';
 import { DB_NAME, DB_PASSWORD, DB_USER_NAME, PORT, ROUTERS_NAMES, SEQUELIZE_CONFIG } from './configure/configure.constants';
-import { Sequelize } from 'sequelize';
+import {Sequelize} from 'sequelize';
 
 export const sequelize = new Sequelize(DB_NAME, DB_USER_NAME, DB_PASSWORD, SEQUELIZE_CONFIG);
 
