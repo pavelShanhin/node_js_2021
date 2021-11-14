@@ -1,8 +1,8 @@
-import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../services/index';
+import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
-import { RequestParams } from '../index.types';
+import { RequestParams } from '../types';
 import { Request, Response } from 'express';
 import { UserModel } from '../models/index';
 
@@ -21,7 +21,7 @@ class UserController {
 
             res.status(201).send({ message: 'User was created', createdUser });
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
@@ -35,7 +35,7 @@ class UserController {
                 res.status(400).send({ message: 'User has been not found' });
             }
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 

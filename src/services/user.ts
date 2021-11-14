@@ -1,5 +1,5 @@
 import { ModelCtor, Op } from 'sequelize';
-import { User, UserServiceInstance, RequestParams, UserInstance, CreateUserData, UpdateUserData } from '../index.types';
+import { User, UserServiceInstance, RequestParams, UserInstance, CreateUserData, UpdateUserData } from '../types';
 
 export class UserService implements UserServiceInstance {
     public userModel: ModelCtor<UserInstance>;
@@ -10,8 +10,9 @@ export class UserService implements UserServiceInstance {
 
     async getUser({ userId }: RequestParams) {
         const foundUser = await this.userModel.findByPk(userId, { raw:true });
-
-        return foundUser;
+        const castUser = (foundUser as unknown) as User;
+        
+        return !castUser.isDeleted ? castUser : null;
     }
 
     async getUsersList({ login, limit }: RequestParams) {
@@ -20,9 +21,9 @@ export class UserService implements UserServiceInstance {
                 [Op.iLike]: `%${login}%`
             } };
 
-            const users = await this.userModel.findAll({ where: login ? whereParams : undefined, order: [['id', 'ASC']], limit, raw: true });
-
-            return users;
+            const users = await (await this.userModel.findAll({ where: login ? whereParams : undefined, order: [['id', 'ASC']], limit, raw: true }));
+            
+            return ((users as unknown) as User[]).filter(user => !user.isDeleted);
         } catch (error) {
             console.error(error);
 
@@ -38,7 +39,9 @@ export class UserService implements UserServiceInstance {
                 return null;
             }
 
-            return newUser;
+            const castNewUser = newUser as unknown as User
+
+            return castNewUser;
         } catch (error) {
             console.error(error);
 
@@ -51,7 +54,9 @@ export class UserService implements UserServiceInstance {
             const [result] = await this.userModel.upsert(passedUser, { returning: true });
 
             if (result) {
-                return result;
+                const castNewUser = result as unknown as User
+
+                return castNewUser;
             }
 
             return null;
@@ -68,10 +73,9 @@ export class UserService implements UserServiceInstance {
 
             if (foundUser) {
                 const { age, login, password } = (foundUser as unknown) as User;
-                await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
-                const result = await this.userModel.destroy({ where: { id: userId } });
+                const [numberOfUsers] = await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
 
-                if (result > 0) {
+                if (numberOfUsers > 0) {
                     return 1;
                 }
 

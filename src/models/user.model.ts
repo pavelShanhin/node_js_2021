@@ -1,5 +1,5 @@
 import { STRING, INTEGER, BOOLEAN, Sequelize } from 'sequelize';
-import { UserInstance } from '../index.types';
+import { UserInstance } from '../types';
 
 export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInstance>('user', {
     id: {
@@ -11,8 +11,6 @@ export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInsta
     login: {
         type: STRING,
         allowNull: false
-
-
     },
     password: {
         type: STRING,
@@ -27,5 +25,5 @@ export const getUserModel = (sequelize: Sequelize) => sequelize.define<UserInsta
         allowNull: false,
         defaultValue: false
     }
-}, { paranoid: true });
+}, { timestamps: false });
 

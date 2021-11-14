@@ -1,4 +1,4 @@
-import { User } from '../index.types';
+import { User } from '../types';
 
 export const INITIAL_USERS: User[] = [
     { id:'5', login: 'Vasili', password: '2345k', age: 52, isDeleted: false },

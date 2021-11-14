@@ -1,4 +1,4 @@
-import { DB_NAME, DB_PASSWORD, DB_USER_NAME, SEQUELIZE_CONFIG } from '../configure/index';
+import { DB_NAME, DB_PASSWORD, DB_USER_NAME, SEQUELIZE_CONFIG } from '../configure';
 import { Sequelize } from 'sequelize';
 import { getUserModel } from './user.model';
 

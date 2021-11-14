@@ -4,7 +4,7 @@ import {
     ValidatedRequestSchema,
     createValidator
 } from 'express-joi-validation';
-import { CreateUserData, UpdateUserData } from '../index.types';
+import { CreateUserData, UpdateUserData } from '../types';
 
 
 const commonSchema = {

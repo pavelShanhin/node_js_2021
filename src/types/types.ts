@@ -23,9 +23,9 @@ export type CreateUserData  = Omit<UpdateUserData, 'id'>
 export type UserInstance = Model<User, CreateUserData>
 
 export interface UserServiceInstance {
-  getUser(_params:RequestParams): Promise<UserInstance | null>;
-  getUsersList(_params: RequestParams): Promise<UserInstance[] | null>;
-  createUser(_user: CreateUserData):Promise<UserInstance | null>;
-  updateUser(_user: User):Promise<UserInstance | null>;
+  getUser(_params:RequestParams): Promise<User | null>;
+  getUsersList(_params: RequestParams): Promise<User[] | null>;
+  createUser(_user: CreateUserData):Promise<User | null>;
+  updateUser(_user: User):Promise<User | null>;
   softUserDelete(_userId: string): Promise<number | null>;
 }
