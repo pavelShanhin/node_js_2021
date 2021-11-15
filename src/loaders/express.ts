@@ -6,9 +6,7 @@ export const expressLoader = async ({ app }: { app: express.Application }):Promi
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
 
-    app.get('/', (_req, res) => {
-        res.status(400).send({ message: 'This type of request is not handle' });
-    });
+    app.get('/');
 
     app.use(ROUTERS_NAMES.users, userRouter);
 };
