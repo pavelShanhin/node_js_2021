@@ -1,10 +1,10 @@
-import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../services';
+import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
-import { RequestParams } from '../types';
+import { RequestParams } from '../../types';
 import { Request, Response } from 'express';
-import { UserModel } from '../models/index';
+import { UserModel } from '../../models/index';
 
 const userService = new UserService(UserModel);
 
@@ -49,7 +49,7 @@ class UserController {
 
             res.status(400).send({ message: 'User not found' });
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
@@ -63,7 +63,7 @@ class UserController {
 
             res.status(400).send({ message: 'User not found' });
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 
@@ -73,7 +73,7 @@ class UserController {
 
             res.status(200).send({ message: 'Users were found', users });
         } catch (error) {
-            console.log(error);
+            throw error;
         }
     }
 }

@@ -1,6 +1,6 @@
 import * as express from 'express';
 import { ROUTERS_NAMES } from '../configure';
-import { userRouter } from '../controllers';
+import { userRouter } from '../api';
 
 export const expressLoader = async ({ app }: { app: express.Application }):Promise<void> => {
     app.use(express.urlencoded({ extended: false }));

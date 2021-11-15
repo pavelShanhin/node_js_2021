@@ -11,7 +11,7 @@ export class UserService implements UserServiceInstance {
     async getUser({ userId }: RequestParams) {
         const foundUser = await this.userModel.findByPk(userId, { raw:true });
         const castUser = (foundUser as unknown) as User;
-        
+
         return !castUser.isDeleted ? castUser : null;
     }
 
@@ -22,7 +22,7 @@ export class UserService implements UserServiceInstance {
             } };
 
             const users = await (await this.userModel.findAll({ where: login ? whereParams : undefined, order: [['id', 'ASC']], limit, raw: true }));
-            
+
             return ((users as unknown) as User[]).filter(user => !user.isDeleted);
         } catch (error) {
             console.error(error);
@@ -39,7 +39,7 @@ export class UserService implements UserServiceInstance {
                 return null;
             }
 
-            const castNewUser = newUser as unknown as User
+            const castNewUser = newUser as unknown as User;
 
             return castNewUser;
         } catch (error) {
@@ -54,7 +54,7 @@ export class UserService implements UserServiceInstance {
             const [result] = await this.userModel.upsert(passedUser, { returning: true });
 
             if (result) {
-                const castNewUser = result as unknown as User
+                const castNewUser = result as unknown as User;
 
                 return castNewUser;
             }
