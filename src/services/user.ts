@@ -17,9 +17,11 @@ export class UserService implements UserServiceInstance {
 
     async getUsersList({ login, limit }: RequestParams) {
         try {
-            const whereParams = { login: {
-                [Op.iLike]: `%${login}%`
-            } };
+            const whereParams = { 
+                login: {
+                    [Op.iLike]: `%${login}%`
+                }, 
+            };
 
             const users = await (await this.userModel.findAll({ where: login ? whereParams : undefined, order: [['id', 'ASC']], limit, raw: true }));
 

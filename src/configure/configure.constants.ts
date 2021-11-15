@@ -1,25 +1,29 @@
 import { Options } from 'sequelize';
 import { CreateUserData } from '../types';
+import dotenv from 'dotenv';
 
-export const PORT = 3000;
+dotenv.config();
+
+export const PORT = process.env.PORT;
 
 export const ROUTERS_NAMES = {
     users: '/users'
 };
 
-export const DB_NAME = 'postgres';
-export const DB_USER_NAME = 'postgres';
-export const DB_PASSWORD = '1234';
-export const DB_HOST = 'localhost';
-export const DB_PORT = 5432;
+const COMMON_CONFIG = {
+    host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT)
+}
 
-export const SEQUELIZE_CONFIG: Options = { dialect: 'postgres', host: 'localhost', port:5432 };
+const INITIAL_CONNECT_CONFIG = {
+    user: process.env.DB_USER,
+    database: process.env.DB_NAME,
+    password: process.env.DB_PASS,
+}
+
+export const SEQUELIZE_CONFIG: Options = { dialect: 'postgres', username: INITIAL_CONNECT_CONFIG.user, password: INITIAL_CONNECT_CONFIG.password, ...COMMON_CONFIG };
 export const CONNECT_CONFIG = {
-    host: DB_HOST,
-    user: DB_USER_NAME,
-    database: DB_NAME,
-    password: DB_PASSWORD,
-    port: DB_PORT
+    ...COMMON_CONFIG, ...INITIAL_CONNECT_CONFIG
 };
 
 export const DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "users"';

@@ -8,7 +8,19 @@
 
 ## Run application
 
-### Before start application you need to go to src/configure/configure.constants and set up database options
+### Before start application you need to create .env with credentials
+
+`For example:
+
+DB_NAME=postgres
+DB_HOST=localhost
+DB_PORT=5432
+DB_USER=postgres
+DB_PASS=\*\*\*\*
+PORT=3000
+`
+
+### Starting server
 
 `npm run dev:server'
 
@@ -18,4 +30,4 @@
 
 ### Avalible API
 
-`/users-management/users`
+`/users`
