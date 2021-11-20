@@ -7,7 +7,8 @@ dotenv.config();
 export const PORT = process.env.PORT;
 
 export const ROUTERS_NAMES = {
-    users: '/users'
+    users: '/users',
+    groups: '/groups'
 };
 
 const COMMON_CONFIG = {

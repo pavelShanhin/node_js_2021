@@ -1,5 +1,5 @@
 import { ModelCtor, Op } from 'sequelize';
-import { User, UserServiceInstance, RequestParams, UserInstance, CreateUserData, UpdateUserData } from '../types';
+import { User, UserServiceInstance, UserRequestParams, UserInstance, CreateUserData, UpdateUserData } from '../types';
 
 export class UserService implements UserServiceInstance {
     public userModel: ModelCtor<UserInstance>;
@@ -8,14 +8,14 @@ export class UserService implements UserServiceInstance {
         this.userModel = userModel;
     }
 
-    async getUser({ userId }: RequestParams) {
+    async getUser({ userId }: UserRequestParams) {
         const foundUser = await this.userModel.findByPk(userId, { raw:true });
         const castUser = (foundUser as unknown) as User;
 
         return !castUser.isDeleted ? castUser : null;
     }
 
-    async getUsersList({ login, limit }: RequestParams) {
+    async getUsersList({ login, limit }: UserRequestParams) {
         try {
             const commonWhereParams = {isDeleted: false}
             const whereParams = { 

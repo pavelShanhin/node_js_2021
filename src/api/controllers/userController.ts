@@ -1,17 +1,17 @@
-import { UserService, CreateRequestSchema, UpdateRequestSchema  } from '../../services';
+import { UserService, CreateUserRequestSchema, UpdateUserRequestSchema  } from '../../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
-import { RequestParams } from '../../types';
+import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
-import { UserModel } from '../../models/index';
+import { UserModel } from '../../models';
 
 const userService = new UserService(UserModel);
 
 class UserController {
     constructor() {}
 
-    async createUser(req: ValidatedRequest<CreateRequestSchema>, res: Response) {
+    async createUser(req: ValidatedRequest<CreateUserRequestSchema>, res: Response) {
         try {
             const createdUser =  await userService.createUser(req.body);
 
@@ -25,7 +25,7 @@ class UserController {
         }
     }
 
-    async updateUser(req: ValidatedRequest<UpdateRequestSchema>, res: Response) {
+    async updateUser(req: ValidatedRequest<UpdateUserRequestSchema>, res: Response) {
         try {
             const updateUser = await userService.updateUser(req.body);
 
@@ -67,7 +67,7 @@ class UserController {
         }
     }
 
-    async getUsers(req: {query: RequestParams}, res: Response) {
+    async getUsers(req: {query: UserRequestParams}, res: Response) {
         try {
             const users = await userService.getUsersList(req.query);
 

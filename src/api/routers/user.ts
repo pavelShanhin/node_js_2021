@@ -1,12 +1,12 @@
 import express from 'express';
-import { creationValidator, updatingBodyValidator  } from '../../services';
+import { creationUserValidator, updatingUserBodyValidator  } from '../../services';
 import { userController } from '../controllers/userController';
 
 export const userRouter = express.Router();
 
-userRouter.post('/', creationValidator, userController.createUser);
+userRouter.post('/', creationUserValidator, userController.createUser);
 
-userRouter.put('/', updatingBodyValidator, userController.updateUser);
+userRouter.put('/', updatingUserBodyValidator, userController.updateUser);
 
 userRouter.delete('/:userId', userController.deleteUser);
 
