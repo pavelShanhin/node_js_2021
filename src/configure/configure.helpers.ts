@@ -1,4 +1,4 @@
-import { CreateUserData } from '../types';
+import { CreateGroupData, CreateUserData } from '../types';
 
 export const createInsertUsersQuery = (users: CreateUserData[]) =>  {
     const insertUsersQuery = 'INSERT INTO users (login, age, password) VALUES ';
@@ -7,3 +7,13 @@ export const createInsertUsersQuery = (users: CreateUserData[]) =>  {
         return `${acc  }('${login}', ${age}, '${password}')${index === users.length - 1 ? '' : ','}`;
     }, insertUsersQuery);
 };
+
+export const createInsertGroupQuery = (groups: CreateGroupData[]) => {
+    const insertGroupsQuery = 'INSERT INTO groups (name, permissions) VALUES ';
+
+    return groups.reduce((acc, { permissions, name }, outerIndex) => {
+        const permissionsValue = permissions.reduce((acc, permission, innerIndex) => `${acc }${permission}${innerIndex === permissions.length - 1 ? '' : ','}`, '');
+
+        return `${acc  }('${name}', '{${permissionsValue}}')${outerIndex === groups.length - 1 ? '' : ','}`;
+    }, insertGroupsQuery);
+}

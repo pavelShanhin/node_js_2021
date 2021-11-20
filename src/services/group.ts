@@ -65,17 +65,10 @@ export class GroupService implements GroupServiceInstance {
 
     async removeGroup(groupId: string) {
         try {
-            const foundGroup = await this.groupModel.findByPk(groupId, { raw: true });
+            const result = await this.groupModel.destroy({ where: { id: groupId } });
 
-            if (foundGroup) {
-                const { id, name, permissions } = (foundGroup as unknown) as Group;
-                const [groupNumbers] = await this.groupModel.update({ id, name, permissions  }, { where: { id: groupId } });
-
-                if (groupNumbers > 0) {
-                    return 1;
-                }
-
-                return null;
+            if (result > 0) {
+                return 1;
             }
 
             return null;

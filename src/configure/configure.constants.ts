@@ -1,5 +1,5 @@
 import { Options } from 'sequelize';
-import { CreateUserData } from '../types';
+import { CreateGroupData, CreateUserData, Permissions } from '../types';
 import dotenv from 'dotenv';
 
 dotenv.config();
@@ -23,15 +23,25 @@ const INITIAL_CONNECT_CONFIG = {
 }
 
 export const SEQUELIZE_CONFIG: Options = { dialect: 'postgres', username: INITIAL_CONNECT_CONFIG.user, password: INITIAL_CONNECT_CONFIG.password, ...COMMON_CONFIG };
-export const CONNECT_CONFIG = {
+export const CLIENT_CONNECT_CONFIG = {
     ...COMMON_CONFIG, ...INITIAL_CONNECT_CONFIG
 };
 
-export const DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "users"';
-export const CREATE_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS "users" ("id" SERIAL, "login" VARCHAR NOT NULL, "age" INTEGER, "password" VARCHAR NOT NULL, "isDeleted" BOOLEAN DEFAULT false, PRIMARY KEY ("id"));';
+export const USERS_DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "users"';
+export const USERS_CREATE_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS "users" ("id" SERIAL, "login" VARCHAR NOT NULL, "age" INTEGER, "password" VARCHAR NOT NULL, "isDeleted" BOOLEAN DEFAULT false, PRIMARY KEY ("id"));';
 
 export const INITIAL_USERS: CreateUserData[] = [
     { age: 56, login: 'Vasili', password: '253698v' },
     { age: 40, login: 'Petr', password: '285698v' },
     { age: 30, login: 'Nikolai', password: '259998v' }
 ];
+
+export const INITIAL_GROUPS: CreateGroupData[] = [
+    { name: 'Bears', permissions: [Permissions.READ, Permissions.SHARE] },
+    { name: 'Bulls', permissions: [Permissions.READ, Permissions.SHARE] },
+    { name: 'Cats', permissions: [Permissions.READ, Permissions.SHARE]}
+];
+
+export const GROUPS_DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "groups"';
+export const GROUPS_CREATE_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS "groups" ("id" SERIAL, "name" VARCHAR NOT NULL, "permissions" TEXT ARRAY, PRIMARY KEY ("id"));';
+

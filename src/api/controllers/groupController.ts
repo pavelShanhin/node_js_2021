@@ -12,6 +12,7 @@ class GroupController {
     constructor() {}
 
     async createGroup(req: ValidatedRequest<CreateGroupRequestSchema>, res: Response) {
+        console.log(req.body,'req body')
         try {
             const createdGroup =  await groupService.createGroup(req.body);
 

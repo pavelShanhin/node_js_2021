@@ -13,7 +13,7 @@ export const getGroupModel = (sequelize: Sequelize) => sequelize.define<GroupIns
         allowNull: false
     },
     permissions: {
-        type: ARRAY,
+        type: ARRAY(STRING),
         allowNull: false
     },
 }, { timestamps: false });

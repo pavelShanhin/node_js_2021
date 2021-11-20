@@ -8,7 +8,13 @@ export type User = {
   isDeleted: boolean;
 }
 
-export type Permissions = 'READ' | 'SHARE' | 'WRITE' | 'DELETE' | 'UPLOAD_FILES';
+export enum Permissions {
+  READ = 'READ',
+  SHARE = 'SHARE',
+  WRITE = 'WRITE',
+  DELETE = 'DELETE',
+  UPLOAD_FILES = 'UPLOAD_FILES'
+} 
 
 export type Group = {
   id: string;
