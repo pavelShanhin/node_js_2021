@@ -17,17 +17,17 @@ export class UserService implements UserServiceInstance {
 
     async getUsersList({ login, limit }: UserRequestParams) {
         try {
-            const commonWhereParams = {isDeleted: false}
-            const whereParams = { 
+            const commonWhereParams = { isDeleted: false };
+            const whereParams = {
                 login: {
                     [Op.iLike]: `%${login}%`
-                }, 
+                },
                 ...commonWhereParams
-            }
+            };
 
             const users = await (await this.userModel.findAll({ where: login ? whereParams : commonWhereParams, order: [['id', 'ASC']], limit, raw: true }));
 
-            return ((users as unknown) as User[])
+            return ((users as unknown) as User[]);
         } catch (error) {
             console.error(error);
 

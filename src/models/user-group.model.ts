@@ -1,18 +1,14 @@
 import { STRING, INTEGER, ARRAY, Sequelize } from 'sequelize';
-import { GroupInstance } from '../types';
+import { UserGroupInstance } from '../types';
 
-export const getGroupModel = (sequelize: Sequelize) => sequelize.define<GroupInstance>('group', {
+export const getUserGroupModel = (sequelize: Sequelize) => sequelize.define<UserGroupInstance>('userGroup', {
     id: {
         type: INTEGER,
         autoIncrement: true,
         primaryKey: true,
         allowNull: false
     },
-    name: {
-        type: STRING,
-        allowNull: false
-    },
-    permissions: {
+    groups: {
         type: ARRAY(STRING),
         allowNull: false
     }

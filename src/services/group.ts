@@ -1,5 +1,5 @@
 import { ModelCtor } from 'sequelize';
-import {  GroupServiceInstance, GroupRequestParams, UserInstance, CreateGroupData, GroupInstance, Group, UpdateGroupData,  } from '../types';
+import {  GroupServiceInstance, GroupRequestParams, CreateGroupData, GroupInstance, Group, UpdateGroupData  } from '../types';
 
 export class GroupService implements GroupServiceInstance {
     public groupModel: ModelCtor<GroupInstance>;
@@ -19,7 +19,7 @@ export class GroupService implements GroupServiceInstance {
         try {
             const groups = await (await this.groupModel.findAll());
 
-            return ((groups as unknown) as Group[])
+            return ((groups as unknown) as Group[]);
         } catch (error) {
             console.error(error);
 

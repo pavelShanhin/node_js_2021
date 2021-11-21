@@ -2,14 +2,14 @@ import * as Joi from 'joi';
 import {
     ContainerTypes,
     createValidator,
-    ValidatedRequestSchema} from 'express-joi-validation';
+    ValidatedRequestSchema } from 'express-joi-validation';
 import { CreateGroupData, Permissions, UpdateGroupData } from '../types';
 
 const requestValidator = createValidator();
 
 const commonGroupSchema = {
-  name: Joi.string().required(),
-  permissions: Joi.array().items(Joi.string().valid(Permissions.DELETE, Permissions.READ, Permissions.SHARE, Permissions.UPLOAD_FILES, Permissions.WRITE)).required()
+    name: Joi.string().required(),
+    permissions: Joi.array().items(Joi.string().valid(Permissions.DELETE, Permissions.READ, Permissions.SHARE, Permissions.UPLOAD_FILES, Permissions.WRITE)).required()
 };
 
 const createGroupBodySchema = Joi.object(commonGroupSchema);
