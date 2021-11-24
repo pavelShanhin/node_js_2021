@@ -1,4 +1,5 @@
 import { ModelCtor, Op } from 'sequelize';
+import { sequelize } from '../models';
 import { User, UserServiceInstance, UserRequestParams, UserInstance, CreateUserData, UpdateUserData } from '../types';
 
 export class UserService implements UserServiceInstance {
@@ -78,6 +79,7 @@ export class UserService implements UserServiceInstance {
             if (foundUser) {
                 const { age, login, password } = (foundUser as unknown) as User;
                 const [numberOfUsers] = await this.userModel.update({ age, login, password, isDeleted: true }, { where: { id: userId } });
+                await sequelize.models.UserGroup.destroy({ where: { userId } });
 
                 if (numberOfUsers > 0) {
                     return 1;

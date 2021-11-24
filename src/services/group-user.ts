@@ -1,37 +1,34 @@
-import {  ModelCtor } from 'sequelize';
-import { GroupModel } from '../models';
-import {  GroupUserServiceInstance, UserGroupInstance, CreateUserGroupRelation, UserInstance, GroupInstance  } from '../types';
+
+import { ModelCtor, Transaction } from 'sequelize';
+import {  GroupUserServiceInstance, CreateUserGroupRelation, GroupInstance  } from '../types';
+import { sequelize } from '../models';
 
 export class GroupUserService implements  GroupUserServiceInstance {
-    public groupUserModel: ModelCtor<UserGroupInstance>;
-    public userModel: ModelCtor<UserInstance>;
     public groupModel: ModelCtor<GroupInstance>;
 
-    constructor(groupUserModel:ModelCtor<UserGroupInstance>, userModel:ModelCtor<UserInstance>, groupModel: ModelCtor<GroupInstance>) {
-        this.groupUserModel = groupUserModel;
-        this.userModel = userModel;
+    constructor(groupModel: ModelCtor<GroupInstance>) {
         this.groupModel = groupModel;
     }
 
     async addUsersToGroup({ groupId, usersIds }: CreateUserGroupRelation) {
-        if (usersIds.length === 0) {
-            return null;
+        try {
+            await sequelize.transaction(async (_t: Transaction) => {
+                const foundGroup = await this.groupModel.findOne({
+                    where: {
+                        id: groupId
+                    }
+                }) as any;
+
+                if (!foundGroup) {
+                    throw new Error('Group not found');
+                }
+
+                for (const userId of usersIds) {
+                    await foundGroup.addUser(userId, { through: { userId } });
+                }
+            });
+        } catch (error) {
+            throw error;
         }
-
-        const foundUsers = await Promise.all(usersIds.map(async (userId) => await this.userModel.findOne({ where: { id: userId }, include: GroupModel, raw: true })));
-
-        for (const user of foundUsers) {
-            if (!user) {
-                return;
-            }
-
-            const foundGroup = await this.groupModel.findOne({ where: { id: groupId }, raw: true });
-
-            if (!foundGroup) {
-                return;
-            }
-        }
-
-        return null;
     }
 }

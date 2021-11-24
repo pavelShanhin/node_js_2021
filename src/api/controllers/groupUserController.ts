@@ -1,21 +1,17 @@
 import { GroupUserService   } from '../../services';
 import { Request, Response } from 'express';
-import { GroupModel, UserGroupModel, UserModel } from '../../models';
+import { GroupModel } from '../../models';
 
-const userGroupService = new GroupUserService(UserGroupModel, UserModel, GroupModel);
+const userGroupService = new GroupUserService(GroupModel);
 
 class GroupUserController {
     constructor() {}
 
-    async getSomething(req: Request, res: Response) {
+    async setUsersToGroups(req: Request, res: Response) {
         try {
             const createdGroup =  await userGroupService.addUsersToGroup(req.body);
 
-            if (!createdGroup) {
-                res.status(400).send({ message: 'Group with this login has already been' });
-            }
-
-            res.status(201).send({ message: 'Group was created', createdGroup });
+            res.status(201).send({ message: 'Group was added', createdGroup });
         } catch (error) {
             throw error;
         }
