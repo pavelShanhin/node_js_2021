@@ -5,7 +5,7 @@ import {
 import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { UserModel } from '../../models';
-import {ErrorApi} from '../../services';
+import { ErrorApi } from '../../services';
 
 const userService = new UserService(UserModel);
 
@@ -34,8 +34,7 @@ class UserController {
             if (!updateUser) {
                 next(ErrorApi.badRequest('User has been not found',  req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
-                
-            } 
+            }
 
             res.status(204).send({ message: 'User was updated', updateUser });
         } catch (error) {
@@ -53,7 +52,6 @@ class UserController {
             }
 
             res.status(200).send({ message: 'User was deleted', deletedUser });
-            
         } catch (error) {
             throw error;
         }
@@ -64,7 +62,7 @@ class UserController {
             const foundUser = await userService.getUser(req.params);
 
             if (!foundUser) {
-                next(ErrorApi.badRequest('User has been not found', req.method, LoggingService.getKeyValueString(req.params, 'params') ));
+                next(ErrorApi.badRequest('User has been not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
                 return;
             }
 
@@ -75,14 +73,14 @@ class UserController {
     }
 
     async getUsers(req: Request & {query: UserRequestParams}, res: Response, next: Function) {
-        const {query} = req;
+        const { query } = req;
 
         try {
             const users = await userService.getUsersList(query);
 
-            if(!users) {
-                next(ErrorApi.badRequest('Users have been not found', req.method, LoggingService.getKeyValueString(query, 'query') ));
-                return; 
+            if (!users) {
+                next(ErrorApi.badRequest('Users have been not found', req.method, LoggingService.getKeyValueString(query, 'query')));
+                return;
             }
 
             res.status(200).send({ message: 'Users were found', users });

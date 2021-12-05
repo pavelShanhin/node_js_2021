@@ -5,7 +5,6 @@ import { groupController } from '../controllers/groupController';
 export const groupRouter = express.Router();
 
 
-
 groupRouter.post('/', LoggingService.log('createGroup', 'body'), creationGroupValidator, groupController.createGroup);
 
 groupRouter.put('/', LoggingService.log('updateGroup', 'body'), updatingGroupBodyValidator, groupController.updateGroup);

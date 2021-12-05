@@ -72,12 +72,12 @@ class GroupController {
     }
 
     async getGroups(req: Request & {query: GroupRequestParams}, res: Response, next: Function) {
-        const {query} = req;
+        const { query } = req;
 
         try {
             const groups = await groupService.getGroupList(query);
 
-            if(!groups) {
+            if (!groups) {
                 next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(query, 'query')));
                 return;
             }
