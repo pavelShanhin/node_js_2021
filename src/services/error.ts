@@ -12,6 +12,7 @@ export class ErrorApi {
     }
 
     static badRequest(msg: string, requestMethod: string, requestData: string ) {
+        console.log('bad request', requestData, requestMethod)
         new ErrorApi(400, msg, requestMethod, requestData)
     }
 

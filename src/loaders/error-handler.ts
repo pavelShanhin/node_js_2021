@@ -3,6 +3,7 @@ import {ErrorApi} from '../services/error';
 import {logger} from '../loaders/winston'
 
 export const apiErrorHandler = (err: Error, _req: Request, res: Response, _next: Function) => {
+    console.log('bad request')
     if(err instanceof ErrorApi) {
         logger.error(err);
         res.status(err.code).json(err.message);

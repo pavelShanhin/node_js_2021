@@ -2,9 +2,7 @@ import * as express from 'express';
 import { ROUTERS_NAMES } from '../configure';
 import { groupRouter, userRouter, groupUserRouter } from '../api';
 import { apiErrorHandler } from './error-handler';
-import { errorLogger, logger} from '../loaders/winston'
-import winston from 'winston';
-
+import { logger} from '../loaders/winston'
 
 export const expressLoader = async ({ app }: { app: express.Application }):Promise<void> => {
     app.use(express.urlencoded({ extended: false }));
@@ -13,7 +11,6 @@ export const expressLoader = async ({ app }: { app: express.Application }):Promi
     app.get('/');
 
     app.use(ROUTERS_NAMES.users, userRouter);
-    
     app.use(ROUTERS_NAMES.groups, groupRouter);
     app.use(ROUTERS_NAMES.userGroup, groupUserRouter);
     app.use(apiErrorHandler);
@@ -22,5 +19,5 @@ export const expressLoader = async ({ app }: { app: express.Application }):Promi
     process.on('unhandledRejection', (reason) => {
         logger.error('Unhandled rejection');
         throw reason;
-    });
+    });  
 };
