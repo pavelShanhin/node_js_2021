@@ -14,11 +14,9 @@ class UserController {
 
     async createUser(req: ValidatedRequest<CreateUserRequestSchema>, res: Response, next:Function) {
         try {
-            throw new Error('some time')
-
             const createdUser =  await userService.createUser(req.body);
 
-            if (createdUser) {
+            if (!createdUser) {
                 next(ErrorApi.badRequest('User with this login has already been', req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
             }
