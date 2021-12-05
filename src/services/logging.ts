@@ -3,7 +3,7 @@ import { Request, Response } from "express";
 export class LoggingService {
     constructor() {}
 
-    private static getKeyValueString = (object: any, objectName: string) => {
+    public static getKeyValueString = (object: any, objectName: string) => {
       const objectEntries = Object.entries(object);
     
       return objectEntries.length > 0 ? objectEntries.reduce((acc, [key, value]) => `${acc} ${key}:${value},`, `${objectName}:`) : '';

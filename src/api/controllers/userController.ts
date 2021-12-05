@@ -1,4 +1,4 @@
-import { UserService, CreateUserRequestSchema, UpdateUserRequestSchema  } from '../../services';
+import { UserService, CreateUserRequestSchema, UpdateUserRequestSchema, LoggingService  } from '../../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
@@ -17,7 +17,7 @@ class UserController {
             const createdUser =  await userService.createUser(req.body);
 
             if (!createdUser) {
-                next(ErrorApi.badRequest('User with this login has already been'));
+                next(ErrorApi.badRequest('User with this login has already been', req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
             }
 
@@ -32,7 +32,7 @@ class UserController {
             const updateUser = await userService.updateUser(req.body);
 
             if (!updateUser) {
-                next(ErrorApi.badRequest('User has been not found'));
+                next(ErrorApi.badRequest('User has been not found',  req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
                 
             } 
@@ -48,7 +48,7 @@ class UserController {
             const deletedUser = await userService.softUserDelete(req.params.userId);
 
             if (!deletedUser) {
-                next(ErrorApi.badRequest('User has been not found'));
+                next(ErrorApi.badRequest('User has been not found',  req.method, LoggingService.getKeyValueString(req.params, 'params')));
                 return;
             }
 
@@ -64,7 +64,7 @@ class UserController {
             const foundUser = await userService.getUser(req.params);
 
             if (!foundUser) {
-                next(ErrorApi.badRequest('User has been not found'));
+                next(ErrorApi.badRequest('User has been not found', req.method, LoggingService.getKeyValueString(req.params, 'params') ));
                 return;
             }
 
@@ -74,9 +74,16 @@ class UserController {
         }
     }
 
-    async getUsers(req: {query: UserRequestParams}, res: Response) {
+    async getUsers(req: Request & {query: UserRequestParams}, res: Response, next: Function) {
+        const {query} = req;
+
         try {
-            const users = await userService.getUsersList(req.query);
+            const users = await userService.getUsersList(query);
+
+            if(!users) {
+                next(ErrorApi.badRequest('Users have been not found', req.method, LoggingService.getKeyValueString(query, 'query') ));
+                return; 
+            }
 
             res.status(200).send({ message: 'Users were found', users });
         } catch (error) {

@@ -1,4 +1,4 @@
-import { CreateGroupRequestSchema, UpdateGroupRequestSchema, GroupService  } from '../../services';
+import { CreateGroupRequestSchema, UpdateGroupRequestSchema, GroupService, ErrorApi, LoggingService  } from '../../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
@@ -11,12 +11,13 @@ const groupService = new GroupService(GroupModel);
 class GroupController {
     constructor() {}
 
-    async createGroup(req: ValidatedRequest<CreateGroupRequestSchema>, res: Response) {
+    async createGroup(req: ValidatedRequest<CreateGroupRequestSchema>, res: Response, next: Function) {
         try {
             const createdGroup =  await groupService.createGroup(req.body);
 
             if (!createdGroup) {
-                res.status(400).send({ message: 'Group with this login has already been' });
+                next(ErrorApi.badRequest('Group with this login has already been', req.method, LoggingService.getKeyValueString(req.body, 'body')));
+                return;
             }
 
             res.status(201).send({ message: 'Group was created', createdGroup });
@@ -25,21 +26,22 @@ class GroupController {
         }
     }
 
-    async updateGroup(req: ValidatedRequest<UpdateGroupRequestSchema>, res: Response) {
+    async updateGroup(req: ValidatedRequest<UpdateGroupRequestSchema>, res: Response, next:Function) {
         try {
             const updatedGroup = await groupService.updateGroup(req.body);
 
             if (updatedGroup) {
                 res.status(204).send({ message: 'Group was updated', updatedGroup });
             } else {
-                res.status(400).send({ message: 'Group has been not found' });
+                next(ErrorApi.badRequest('Group has been not found', req.method, LoggingService.getKeyValueString(req.body, 'body')));
+                return;
             }
         } catch (error) {
             throw error;
         }
     }
 
-    async deleteGroup(req: Request, res: Response) {
+    async deleteGroup(req: Request, res: Response, next: Function) {
         try {
             const deletedGroup = await groupService.removeGroup(req.params.groupId);
 
@@ -47,13 +49,14 @@ class GroupController {
                 res.status(200).send({ message: 'Group was deleted', deletedGroup });
             }
 
-            res.status(400).send({ message: 'Group not found' });
+            next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
+            return;
         } catch (error) {
             throw error;
         }
     }
 
-    async getGroup(req: Request, res: Response) {
+    async getGroup(req: Request, res: Response, next: Function) {
         try {
             const foundGroup = await groupService.getGroup(req.params);
 
@@ -61,15 +64,23 @@ class GroupController {
                 res.status(200).send({ message: 'Group was found', foundGroup });
             }
 
-            res.status(400).send({ message: 'Group not found' });
+            next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
+            return;
         } catch (error) {
             throw error;
         }
     }
 
-    async getGroups(req: {query: GroupRequestParams}, res: Response) {
+    async getGroups(req: Request & {query: GroupRequestParams}, res: Response, next: Function) {
+        const {query} = req;
+
         try {
-            const groups = await groupService.getGroupList(req.query);
+            const groups = await groupService.getGroupList(query);
+
+            if(!groups) {
+                next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(query, 'query')));
+                return;
+            }
 
             res.status(200).send({ message: 'Group were found', groups });
         } catch (error) {
