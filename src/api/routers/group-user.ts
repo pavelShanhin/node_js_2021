@@ -1,6 +1,7 @@
 import express from 'express';
-import { groupUserController } from '../controllers/groupUserController';
+import { LoggingService } from '../../services';
+import { groupUserController } from '../controllers';
 
 export const groupUserRouter = express.Router();
 
-groupUserRouter.post('/', groupUserController.setUsersToGroups);
+groupUserRouter.post('/', LoggingService.log('setUsersToGroups', 'body'), groupUserController.setUsersToGroups);

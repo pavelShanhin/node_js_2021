@@ -5,18 +5,20 @@ import {
 import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { UserModel } from '../../models';
+import {ErrorApi} from '../../services';
 
 const userService = new UserService(UserModel);
 
 class UserController {
     constructor() {}
 
-    async createUser(req: ValidatedRequest<CreateUserRequestSchema>, res: Response) {
+    async createUser(req: ValidatedRequest<CreateUserRequestSchema>, res: Response, next:Function) {
         try {
             const createdUser =  await userService.createUser(req.body);
 
             if (!createdUser) {
-                res.status(400).send({ message: 'User with this login has already been' });
+                next(ErrorApi.badRequest('User with this login has already been'));
+                return;
             }
 
             res.status(201).send({ message: 'User was created', createdUser });
@@ -25,43 +27,48 @@ class UserController {
         }
     }
 
-    async updateUser(req: ValidatedRequest<UpdateUserRequestSchema>, res: Response) {
+    async updateUser(req: ValidatedRequest<UpdateUserRequestSchema>, res: Response, next: Function) {
         try {
             const updateUser = await userService.updateUser(req.body);
 
-            if (updateUser) {
-                res.status(204).send({ message: 'User was updated', updateUser });
-            } else {
-                res.status(400).send({ message: 'User has been not found' });
-            }
+            if (!updateUser) {
+                next(ErrorApi.badRequest('User has been not found'));
+                return;
+                
+            } 
+
+            res.status(204).send({ message: 'User was updated', updateUser });
         } catch (error) {
             throw error;
         }
     }
 
-    async deleteUser(req: Request, res: Response) {
+    async deleteUser(req: Request, res: Response, next:Function) {
         try {
             const deletedUser = await userService.softUserDelete(req.params.userId);
 
-            if (deletedUser) {
-                res.status(200).send({ message: 'User was deleted', deletedUser });
+            if (!deletedUser) {
+                next(ErrorApi.badRequest('User has been not found'));
+                return;
             }
 
-            res.status(400).send({ message: 'User not found' });
+            res.status(200).send({ message: 'User was deleted', deletedUser });
+            
         } catch (error) {
             throw error;
         }
     }
 
-    async getUser(req: Request, res: Response) {
+    async getUser(req: Request, res: Response, next:Function) {
         try {
             const foundUser = await userService.getUser(req.params);
 
-            if (foundUser) {
-                res.status(200).send({ message: 'User was found', foundUser });
+            if (!foundUser) {
+                next(ErrorApi.badRequest('User has been not found'));
+                return;
             }
 
-            res.status(400).send({ message: 'User not found' });
+            res.status(200).send({ message: 'User was found', foundUser });
         } catch (error) {
             throw error;
         }
@@ -79,3 +86,4 @@ class UserController {
 }
 
 export const userController = new UserController();
+

@@ -1,16 +1,16 @@
 import express from 'express';
-import { creationUserValidator, updatingUserBodyValidator  } from '../../services';
+import { creationUserValidator, LoggingService, updatingUserBodyValidator  } from '../../services';
 import { userController } from '../controllers/userController';
 
 export const userRouter = express.Router();
 
-userRouter.post('/', creationUserValidator, userController.createUser);
+userRouter.post('/', LoggingService.log('createUser', 'body'), creationUserValidator, userController.createUser);
 
-userRouter.put('/', updatingUserBodyValidator, userController.updateUser);
+userRouter.put('/', LoggingService.log('updateUser', 'body'), updatingUserBodyValidator, userController.updateUser);
 
-userRouter.delete('/:userId', userController.deleteUser);
+userRouter.delete('/:userId', LoggingService.log('deleteUser', 'params'), userController.deleteUser);
 
-userRouter.get('/:userId', userController.getUser);
+userRouter.get('/:userId', LoggingService.log('getUser', 'params'), userController.getUser);
 
-userRouter.get('/', userController.getUsers);
+userRouter.get('/', LoggingService.log('getUsers', 'query'), userController.getUsers);
 
