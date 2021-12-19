@@ -7,6 +7,7 @@ dotenv.config();
 export const PORT = process.env.PORT;
 
 export const ROUTERS_NAMES = {
+    auth: '/auth',
     users: '/users',
     groups: '/groups',
     userGroup: '/userGroup'
@@ -47,3 +48,5 @@ export const GROUPS_DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "groups"';
 export const GROUPS_CREATE_TABLE_QUERY = 'CREATE TABLE IF NOT EXISTS "groups" ("id" SERIAL, "name" VARCHAR NOT NULL, "permissions" TEXT ARRAY, PRIMARY KEY ("id"));';
 
 export const USERS_GROUP_DROP_TABLE_QUERY = 'DROP TABLE IF EXISTS "UserGroup"';
+
+export const JWT_SECRET =  process.env.JWT_SECRET || '';

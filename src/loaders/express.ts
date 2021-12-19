@@ -1,14 +1,18 @@
 import * as express from 'express';
 import { ROUTERS_NAMES } from '../configure';
-import { groupRouter, userRouter, groupUserRouter } from '../api';
+import { groupRouter, userRouter, groupUserRouter, authRouter } from '../api';
 import { apiErrorHandler } from './error-handler';
 import { logger } from '../loaders/winston';
+import { authService } from '../services/';
 
 export const expressLoader = async ({ app }: { app: express.Application }):Promise<void> => {
     app.use(express.urlencoded({ extended: false }));
     app.use(express.json());
 
     app.get('/');
+    app.use(ROUTERS_NAMES.auth, authRouter);
+
+    app.use(authService.authentificateUser);
 
     app.use(ROUTERS_NAMES.users, userRouter);
     app.use(ROUTERS_NAMES.groups, groupRouter);

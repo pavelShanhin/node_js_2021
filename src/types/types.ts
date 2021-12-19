@@ -18,9 +18,17 @@ export interface UserRequestParams extends Partial<UserUpdateParams> {
   limit?:number;
 }
 
+export type LoginDataType = Pick<User, 'login' | 'password'>;
+
 export type UpdateUserData  = Optional<User, 'isDeleted'>
 export type CreateUserData  = Omit<UpdateUserData, 'id'>
 export type UserInstance = Model<User, CreateUserData>
+
+export type AuthUserData = Omit<UpdateUserData, 'password'>;
+export interface AuthUserDataWithToken  {
+  user: AuthUserData,
+  token: string
+}
 
 export interface UserServiceInstance {
   getUser(_params:UserRequestParams): Promise<User | null>;

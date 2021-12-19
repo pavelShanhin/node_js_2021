@@ -18,4 +18,12 @@ export class ErrorApi {
     static internalError(msg: string) {
         return new ErrorApi(500, msg);
     }
+
+    static unAuthorizedError(msg: string) {
+        return new ErrorApi(401, msg);
+    }
+
+    static forbiddenError(msg: string) {
+        return new ErrorApi(403, msg);
+    }
 }
