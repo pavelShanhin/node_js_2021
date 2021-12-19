@@ -18,6 +18,7 @@ DB_PORT=5432
 DB_USER=postgres
 DB_PASS=\*\*\*\*
 PORT=3000
+JWT_SECRET=898080sdfshdf
 `
 
 ### Starting server
