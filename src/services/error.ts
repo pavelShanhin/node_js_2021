@@ -1,3 +1,9 @@
+import {
+
+    StatusCodes,
+
+} from 'http-status-codes';
+
 export class ErrorApi {
     public code;
     public message: string;
@@ -12,18 +18,18 @@ export class ErrorApi {
     }
 
     static badRequest(msg: string, requestMethod: string, requestData: string) {
-        return new ErrorApi(400, msg, requestMethod, requestData);
+        return new ErrorApi(StatusCodes.BAD_REQUEST, msg, requestMethod, requestData);
     }
 
     static internalError(msg: string) {
-        return new ErrorApi(500, msg);
+        return new ErrorApi(StatusCodes.INTERNAL_SERVER_ERROR, msg);
     }
 
     static unAuthorizedError(msg: string) {
-        return new ErrorApi(401, msg);
+        return new ErrorApi(StatusCodes.UNAUTHORIZED, msg);
     }
 
     static forbiddenError(msg: string) {
-        return new ErrorApi(403, msg);
+        return new ErrorApi(StatusCodes.FORBIDDEN, msg);
     }
 }

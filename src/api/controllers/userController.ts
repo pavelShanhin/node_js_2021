@@ -6,6 +6,11 @@ import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { UserModel } from '../../models';
 import { ErrorApi } from '../../services';
+import {
+  
+    StatusCodes,
+
+} from 'http-status-codes';
 
 const userService = new UserService(UserModel);
 
@@ -21,7 +26,7 @@ class UserController {
                 return;
             }
 
-            res.status(201).send({ message: 'User was created', createdUser });
+            res.status(StatusCodes.CREATED).send({ message: 'User was created', createdUser });
         } catch (error) {
             throw error;
         }
@@ -36,7 +41,7 @@ class UserController {
                 return;
             }
 
-            res.status(204).send({ message: 'User was updated', updateUser });
+            res.status(StatusCodes.OK).send({ message: 'User was updated', updateUser });
         } catch (error) {
             throw error;
         }
@@ -51,7 +56,7 @@ class UserController {
                 return;
             }
 
-            res.status(200).send({ message: 'User was deleted', deletedUser });
+            res.status(StatusCodes.OK).send({ message: 'User was deleted', deletedUser });
         } catch (error) {
             throw error;
         }
@@ -66,7 +71,7 @@ class UserController {
                 return;
             }
 
-            res.status(200).send({ message: 'User was found', foundUser });
+            res.status(StatusCodes.OK).send({ message: 'User was found', foundUser });
         } catch (error) {
             throw error;
         }
@@ -83,7 +88,7 @@ class UserController {
                 return;
             }
 
-            res.status(200).send({ message: 'Users were found', users });
+            res.status(StatusCodes.OK).send({ message: 'Users were found', users });
         } catch (error) {
             throw error;
         }

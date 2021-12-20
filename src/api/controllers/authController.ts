@@ -1,6 +1,7 @@
 import { authService, LoginUserRequestSchema   } from '../../services';
 import {  Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
+import {StatusCodes,} from 'http-status-codes';
 
 class AuthController {
     constructor() {}
@@ -9,7 +10,7 @@ class AuthController {
         try {
             const userDataWithToken =  await authService.login(req.body.login, req.body.password);
 
-            res.status(200).send(userDataWithToken);
+            res.status(StatusCodes.OK).send(userDataWithToken);
         } catch (error) {
             throw error;
         }

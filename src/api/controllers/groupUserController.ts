@@ -1,6 +1,9 @@
 import { GroupUserService   } from '../../services';
 import { Request, Response } from 'express';
 import { GroupModel } from '../../models';
+import {
+    StatusCodes,
+} from 'http-status-codes';
 
 const userGroupService = new GroupUserService(GroupModel);
 
@@ -11,7 +14,7 @@ class GroupUserController {
         try {
             const createdGroup =  await userGroupService.addUsersToGroup(req.body);
 
-            res.status(201).send({ message: 'Group was added', createdGroup });
+            res.status(StatusCodes.CREATED).send({ message: 'Group was added', createdGroup });
         } catch (error) {
             throw error;
         }

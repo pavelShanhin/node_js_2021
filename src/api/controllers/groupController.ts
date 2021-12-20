@@ -5,6 +5,11 @@ import {
 import { GroupRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { GroupModel } from '../../models';
+import {
+  
+    StatusCodes,
+
+} from 'http-status-codes';
 
 const groupService = new GroupService(GroupModel);
 
@@ -20,7 +25,7 @@ class GroupController {
                 return;
             }
 
-            res.status(201).send({ message: 'Group was created', createdGroup });
+            res.status(StatusCodes.CREATED).send({ message: 'Group was created', createdGroup });
         } catch (error) {
             throw error;
         }
@@ -31,7 +36,7 @@ class GroupController {
             const updatedGroup = await groupService.updateGroup(req.body);
 
             if (updatedGroup) {
-                res.status(204).send({ message: 'Group was updated', updatedGroup });
+                res.status(StatusCodes.ACCEPTED).send({ message: 'Group was updated', updatedGroup });
             } else {
                 next(ErrorApi.badRequest('Group has been not found', req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
@@ -46,7 +51,7 @@ class GroupController {
             const deletedGroup = await groupService.removeGroup(req.params.groupId);
 
             if (deletedGroup) {
-                res.status(200).send({ message: 'Group was deleted', deletedGroup });
+                res.status(StatusCodes.OK).send({ message: 'Group was deleted', deletedGroup });
             }
 
             next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
@@ -61,7 +66,7 @@ class GroupController {
             const foundGroup = await groupService.getGroup(req.params);
 
             if (foundGroup) {
-                res.status(200).send({ message: 'Group was found', foundGroup });
+                res.status(StatusCodes.OK).send({ message: 'Group was found', foundGroup });
             }
 
             next(ErrorApi.badRequest('Group not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
@@ -82,7 +87,7 @@ class GroupController {
                 return;
             }
 
-            res.status(200).send({ message: 'Group were found', groups });
+            res.status(StatusCodes.OK).send({ message: 'Group were found', groups });
         } catch (error) {
             throw error;
         }
