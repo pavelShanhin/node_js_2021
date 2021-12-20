@@ -27,6 +27,7 @@ class AuthService {
 
         const signature = crypto
             .createHmac('SHA256', JWT_SECRET)
+            .update(`${head}.${body}`)
             .digest('base64');
 
         return `${head}.${body}.${signature}`;
@@ -68,6 +69,7 @@ class AuthService {
 
             const signature = await crypto
                 .createHmac('SHA256', JWT_SECRET)
+                .update(`${tokenParts[0]}.${tokenParts[1]}`)
                 .digest('base64');
 
             if (signature === tokenParts[2]) {
