@@ -1,6 +1,7 @@
-import { Request } from 'express';
+import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../../services';
+import { API_METHODS } from './constants';
 import { UserController } from './userController';
 
 const user = {
@@ -22,17 +23,17 @@ const reqParams = {
 };
 
 const req = {
-    method: 'GET'
+    method: API_METHODS.GET
 };
 
-const gettingUsersErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'Users have been not found', requestData: 'query: id:3, login:n, limit:2,', requestMethod: 'GET' };
+const gettingUsersErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'Users have been not found', requestData: 'query: id:3, login:n, limit:2,', requestMethod: API_METHODS.GET };
 
 describe('User Controller', () => {
     const mockedRes = {
         status: jest.fn().mockImplementation(() => ({
             send: jest.fn()
         }))
-    } as unknown as Request;
+    } as unknown as Response;
 
     const spiedResStatus = jest.spyOn(mockedRes, 'status');
     const mockNextFunction = jest.fn();
@@ -49,7 +50,7 @@ describe('User Controller', () => {
     const spyedGetUsers = jest.spyOn(userController, 'getUsers');
 
     describe('GetUsers method', () => {
-        const gettingUsersRequest = { ...req, query: queryParams };
+        const gettingUsersRequest = { ...req, query: queryParams } as unknown as Request;
 
         it(`Should be called with params and response with status ${StatusCodes.OK}`, async () => {
             await userController.getUsers(gettingUsersRequest, mockedRes, mockNextFunction);
@@ -69,8 +70,8 @@ describe('User Controller', () => {
     });
 
     const spyedGetUser = jest.spyOn(userController, 'getUser');
-    const gettingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'params: userId:3,', requestMethod: 'GET' };
-    const gettingUserRequest = { ...req, params: reqParams };
+    const gettingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'params: userId:3,', requestMethod: API_METHODS.GET };
+    const gettingUserRequest = { ...req, params: reqParams } as unknown as Request;
 
     describe('GetUser method', () => {
         it(`Should be called with params and response with status ${StatusCodes.OK}`, async () => {
@@ -91,8 +92,8 @@ describe('User Controller', () => {
     });
 
     const spyedCreateUser = jest.spyOn(userController, 'createUser');
-    const creatingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User with this login has already been', requestData: 'body: login:Nikolai, password:259998v, age:30,', requestMethod: 'POST' };
-    const createUserRequest = { ...req, method: 'POST', body: user };
+    const creatingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User with this login has already been', requestData: 'body: login:Nikolai, password:259998v, age:30,', requestMethod: API_METHODS.POST };
+    const createUserRequest = { ...req, method: 'POST', body: user } as unknown as Request;
 
     describe('CreateUser method', () => {
         it(`Should be called with params and response with status ${StatusCodes.CREATED}`, async () => {
@@ -113,8 +114,8 @@ describe('User Controller', () => {
     });
 
     const spyedUpdateUser = jest.spyOn(userController, 'updateUser');
-    const updatingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'body: login:Nikolai, password:259998v, age:30, id:3,', requestMethod: 'PUT' };
-    const updatingUserRequest = { ...req, method: 'PUT', body: userWithId };
+    const updatingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'body: login:Nikolai, password:259998v, age:30, id:3,', requestMethod: API_METHODS.PUT };
+    const updatingUserRequest = { ...req, method: 'PUT', body: userWithId } as unknown as Request;
 
     describe('UpdateUser method', () => {
         it(`Should be called with params and response with status ${StatusCodes.OK}`, async () => {
@@ -135,8 +136,8 @@ describe('User Controller', () => {
     });
 
     const spyedDeleteUser = jest.spyOn(userController, 'deleteUser');
-    const deletingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'params: userId:3,', requestMethod: 'DELETE' };
-    const deletingUserRequest = { ...req, method: 'DELETE', params:  reqParams };
+    const deletingUserErrorArgs = { code: StatusCodes.BAD_REQUEST, message: 'User has been not found', requestData: 'params: userId:3,', requestMethod: API_METHODS.DELETE };
+    const deletingUserRequest = { ...req, method: 'DELETE', params:  reqParams } as unknown as Request;
 
     describe('DeleteUser method', () => {
         it(`Should be called with params and response with status ${StatusCodes.OK}`, async () => {
