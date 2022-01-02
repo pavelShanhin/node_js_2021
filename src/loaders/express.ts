@@ -12,7 +12,7 @@ export const expressLoader = async ({ app }: { app: express.Application }):Promi
 
     app.get('/');
 
-    app.use(cors())
+    app.use(cors());
 
     app.use(ROUTERS_NAMES.auth, authRouter);
 

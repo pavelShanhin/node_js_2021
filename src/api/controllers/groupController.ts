@@ -6,8 +6,8 @@ import { GroupRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { GroupModel } from '../../models';
 import {
-  
-    StatusCodes,
+
+    StatusCodes
 
 } from 'http-status-codes';
 

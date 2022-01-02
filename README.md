@@ -23,12 +23,18 @@ JWT_SECRET=898080sdfshdf
 
 ### Starting server
 
-`npm run dev:server'
+`npm run dev:server`
+
+## Run tests
+
+`npm run test`
 
 ## Run linter 'eslint'
 
-`npm run lint'
+`npm run lint`
 
 ### Avalible API
 
 `/users`
+`/groups`
+`/auth`

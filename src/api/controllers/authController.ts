@@ -1,7 +1,7 @@
 import { authService, LoginUserRequestSchema   } from '../../services';
 import {  Response } from 'express';
 import { ValidatedRequest } from 'express-joi-validation';
-import {StatusCodes,} from 'http-status-codes';
+import { StatusCodes } from 'http-status-codes';
 
 class AuthController {
     constructor() {}

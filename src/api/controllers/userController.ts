@@ -2,18 +2,18 @@ import {  CreateUserRequestSchema, UpdateUserRequestSchema, LoggingService  } fr
 import {
     ValidatedRequest
 } from 'express-joi-validation';
-import {UserService} from '../../services/user'
+import { UserService } from '../../services/user';
 import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
 import { ErrorApi } from '../../services';
 import {
-  
-    StatusCodes,
+
+    StatusCodes
 
 } from 'http-status-codes';
 
 export class UserController {
-    private userService: UserService
+    private userService: UserService;
 
     constructor(userService: UserService) {
         this.userService = userService;

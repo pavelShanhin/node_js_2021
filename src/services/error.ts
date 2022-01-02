@@ -1,6 +1,6 @@
 import {
 
-    StatusCodes,
+    StatusCodes
 
 } from 'http-status-codes';
 

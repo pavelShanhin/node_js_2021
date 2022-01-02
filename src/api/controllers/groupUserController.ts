@@ -2,7 +2,7 @@ import { GroupUserService   } from '../../services';
 import { Request, Response } from 'express';
 import { GroupModel } from '../../models';
 import {
-    StatusCodes,
+    StatusCodes
 } from 'http-status-codes';
 
 const userGroupService = new GroupUserService(GroupModel);
