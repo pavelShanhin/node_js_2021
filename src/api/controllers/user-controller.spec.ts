@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import { StatusCodes } from 'http-status-codes';
 import { UserService } from '../../services';
 import { API_METHODS } from './constants';
-import { UserController } from './userController';
+import { UserController } from './user-controller';
 
 const user = {
     login: 'Nikolai',

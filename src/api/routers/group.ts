@@ -1,6 +1,6 @@
 import express from 'express';
 import { creationGroupValidator, LoggingService, updatingGroupBodyValidator  } from '../../services';
-import { groupController } from '../controllers/groupController';
+import { groupController } from '../controllers/group-controller';
 
 export const groupRouter = express.Router();
 
