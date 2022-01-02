@@ -1,10 +1,10 @@
-import { UserService, CreateUserRequestSchema, UpdateUserRequestSchema, LoggingService  } from '../../services';
+import {  CreateUserRequestSchema, UpdateUserRequestSchema, LoggingService  } from '../../services';
 import {
     ValidatedRequest
 } from 'express-joi-validation';
+import {UserService} from '../../services/user'
 import { UserRequestParams } from '../../types';
 import { Request, Response } from 'express';
-import { UserModel } from '../../models';
 import { ErrorApi } from '../../services';
 import {
   
@@ -12,19 +12,22 @@ import {
 
 } from 'http-status-codes';
 
-const userService = new UserService(UserModel);
+export class UserController {
+    private userService: UserService
 
-class UserController {
-    constructor() {}
+    constructor(userService: UserService) {
+        this.userService = userService;
+    }
 
     async createUser(req: ValidatedRequest<CreateUserRequestSchema>, res: Response, next:Function) {
         try {
-            const createdUser =  await userService.createUser(req.body);
+            const createdUser =  await this.userService.createUser(req.body);
 
             if (!createdUser) {
                 next(ErrorApi.badRequest('User with this login has already been', req.method, LoggingService.getKeyValueString(req.body, 'body')));
                 return;
             }
+
 
             res.status(StatusCodes.CREATED).send({ message: 'User was created', createdUser });
         } catch (error) {
@@ -34,7 +37,7 @@ class UserController {
 
     async updateUser(req: ValidatedRequest<UpdateUserRequestSchema>, res: Response, next: Function) {
         try {
-            const updateUser = await userService.updateUser(req.body);
+            const updateUser = await this.userService.updateUser(req.body);
 
             if (!updateUser) {
                 next(ErrorApi.badRequest('User has been not found',  req.method, LoggingService.getKeyValueString(req.body, 'body')));
@@ -49,7 +52,7 @@ class UserController {
 
     async deleteUser(req: Request, res: Response, next:Function) {
         try {
-            const deletedUser = await userService.softUserDelete(req.params.userId);
+            const deletedUser = await this.userService.softUserDelete(req.params.userId);
 
             if (!deletedUser) {
                 next(ErrorApi.badRequest('User has been not found',  req.method, LoggingService.getKeyValueString(req.params, 'params')));
@@ -64,7 +67,7 @@ class UserController {
 
     async getUser(req: Request, res: Response, next:Function) {
         try {
-            const foundUser = await userService.getUser(req.params);
+            const foundUser = await this.userService.getUser(req.params);
 
             if (!foundUser) {
                 next(ErrorApi.badRequest('User has been not found', req.method, LoggingService.getKeyValueString(req.params, 'params')));
@@ -81,12 +84,13 @@ class UserController {
         const { query } = req;
 
         try {
-            const users = await userService.getUsersList(query);
+            const users = await this.userService.getUsersList(query);
 
             if (!users) {
                 next(ErrorApi.badRequest('Users have been not found', req.method, LoggingService.getKeyValueString(query, 'query')));
                 return;
             }
+
 
             res.status(StatusCodes.OK).send({ message: 'Users were found', users });
         } catch (error) {
@@ -94,6 +98,3 @@ class UserController {
         }
     }
 }
-
-export const userController = new UserController();
-

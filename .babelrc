@@ -6,5 +6,10 @@
   "ignore": ["node_modules"],
   "comments": false,
   "minified": true,
-  "plugins": []
+  "plugins": [],
+  "env": {
+    "test": {
+      "plugins": ["@babel/plugin-transform-modules-commonjs"]
+    }
+}
 }
