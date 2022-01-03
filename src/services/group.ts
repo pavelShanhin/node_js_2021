@@ -15,7 +15,7 @@ export class GroupService implements GroupServiceInstance {
         return castGroup;
     }
 
-    async getGroupList({}: GroupRequestParams) {
+    async getGroupList() {
         try {
             const groups = await (await this.groupModel.findAll());
 

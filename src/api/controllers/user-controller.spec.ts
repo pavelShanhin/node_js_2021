@@ -60,7 +60,7 @@ describe('User Controller', () => {
         });
 
         it(`Should be called with bad params and then will be called callback function for handle error ${StatusCodes.BAD_REQUEST}`, async () => {
-            userServiceMock.getUsersList = jest.fn().mockResolvedValue(undefined),
+            userServiceMock.getUsersList = jest.fn().mockResolvedValue(undefined);
 
             await userController.getUsers(gettingUsersRequest, mockedRes, mockNextFunction);
 
@@ -82,7 +82,7 @@ describe('User Controller', () => {
         });
 
         it(`Should be called with bad params and then will be called callback function for handle error ${StatusCodes.BAD_REQUEST}`, async () => {
-            userServiceMock.getUser = jest.fn().mockResolvedValue(null),
+            userServiceMock.getUser = jest.fn().mockResolvedValue(null);
 
             await userController.getUser(gettingUserRequest, mockedRes, mockNextFunction);
 
@@ -104,7 +104,7 @@ describe('User Controller', () => {
         });
 
         it(`Should be called with bad params and then will be called callback function for handle error ${StatusCodes.BAD_REQUEST}`, async () => {
-            userServiceMock.createUser = jest.fn().mockResolvedValue(null),
+            userServiceMock.createUser = jest.fn().mockResolvedValue(null);
 
             await userController.createUser(createUserRequest, mockedRes, mockNextFunction);
 
@@ -126,7 +126,7 @@ describe('User Controller', () => {
         });
 
         it(`Should be called with bad params and then will be called callback function for handle error ${StatusCodes.BAD_REQUEST}`, async () => {
-            userServiceMock.updateUser = jest.fn().mockResolvedValue(null),
+            userServiceMock.updateUser = jest.fn().mockResolvedValue(null);
 
             await userController.updateUser(updatingUserRequest, mockedRes, mockNextFunction);
 

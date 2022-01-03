@@ -1,9 +1,12 @@
 import express from 'express';
-import { creationGroupValidator, LoggingService, updatingGroupBodyValidator  } from '../../services';
-import { groupController } from '../controllers/group-controller';
+import { GroupModel } from '../../models';
+import { creationGroupValidator, GroupService, LoggingService, updatingGroupBodyValidator  } from '../../services';
+import { GroupController } from '../controllers';
+
+const groupService = new GroupService(GroupModel);
+const groupController = new GroupController(groupService);
 
 export const groupRouter = express.Router();
-
 
 groupRouter.post('/', LoggingService.log('createGroup', 'body'), creationGroupValidator, groupController.createGroup);
 

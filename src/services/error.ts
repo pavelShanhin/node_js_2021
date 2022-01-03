@@ -17,7 +17,7 @@ export class ErrorApi {
         this.requestData = requestData;
     }
 
-    static badRequest(msg: string, requestMethod: string, requestData: string) {
+    static badRequest(msg: string, requestMethod: string, requestData?: string) {
         return new ErrorApi(StatusCodes.BAD_REQUEST, msg, requestMethod, requestData);
     }
 
